@@ -46,3 +46,6 @@ console.log("====================================");
 const countNormal = pokémon.filter(p => p.types.includes("normal")).length;
 console.log(countNormal);
 console.log("====================================");
+const names = pokémon.map(p => p.name);
+console.log(names);
+console.log("====================================");
