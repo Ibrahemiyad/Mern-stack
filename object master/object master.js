@@ -34,7 +34,7 @@ console.log("====================================");
 const moreTahnOneType = pokémon.filter(p => p.types.length >1);
 console.log(moreTahnOneType);
 console.log("====================================");
-const greater = pokémon.filter(p => p.id > 99);
+const greater = pokémon.filter(p => p.id > 99).map(p => p.name);
 console.log(greater);
 console.log("====================================");
 const typrIsPoison = pokémon.filter(p =>p.types.includes("poison"));
