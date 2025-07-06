@@ -1,0 +1,9 @@
+/*style.css*/
+.btn{
+    padding: 12px 24px;
+    font-family: Arial, sans-serief;
+    font-weight: bold;
+    background: linear-gradient(30deg, rebecapurple, magenta);
+    color: #fff;
+    border: none;
+}
