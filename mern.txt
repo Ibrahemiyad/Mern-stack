@@ -1,1 +1,7 @@
-https://github.com/Ibrahemiyad/Mern-stack/tree/main/hook-form
+Pokémon API GET Requests:
+
+1. https://pokeapi.co/api/v2/pokemon/bulbasaur
+2. https://pokeapi.co/api/v2/pokemon/pikachu
+3. https://pokeapi.co/api/v2/pokemon/charizard
+4. https://pokeapi.co/api/v2/pokemon/squirtle
+5. https://pokeapi.co/api/v2/pokemon/snorlax
