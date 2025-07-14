@@ -1,7 +1,39 @@
-Pokémon API GET Requests:
+use my_first_db
 
-1. https://pokeapi.co/api/v2/pokemon/bulbasaur
-2. https://pokeapi.co/api/v2/pokemon/pikachu
-3. https://pokeapi.co/api/v2/pokemon/charizard
-4. https://pokeapi.co/api/v2/pokemon/squirtle
-5. https://pokeapi.co/api/v2/pokemon/snorlax
+db.createCollection("student")
+
+db.students.insertMany([
+  { name: "Alice", home_state: "California", lucky_number: 7, birthday: { month: 5, day: 21, year: 2000 } },
+  { name: "Bob", home_state: "Washington", lucky_number: 3, birthday: { month: 11, day: 14, year: 1999 } },
+  { name: "Charlie", home_state: "New York", lucky_number: 2, birthday: { month: 8, day: 8, year: 2001 } },
+  { name: "Dana", home_state: "California", lucky_number: 5, birthday: { month: 4, day: 12, year: 1998 } },
+  { name: "Eve", home_state: "Texas", lucky_number: 6, birthday: { month: 9, day: 1, year: 2002 } }
+]);
+
+db.students.find();
+
+db.student.find({home_state:{$in:["California", "Washington"] } });
+
+db.students.find({ lucky_number: { $gt: 3 } })
+
+db.students.updateMany({}, { $set: { interests: ["coding", "brunch", "MongoDB"] } })
+
+db.students.updateOne({ name: "Ali" }, { $addToSet: { interests: "football" } })
+db.students.updateOne({ name: "Sara" }, { $addToSet: { interests: "basketball" } })
+
+db.students.updateOne({ name: "Ali" }, { $addToSet: { interests: "taxes" } })
+
+db.students.updateOne({ name: "Ali" }, { $pull: { interests: "taxes" } })
+
+db.students.deleteMany({ home_state: "California" })
+
+db.students.deleteOne({ name: "Omar" })
+
+db.students.deleteOne({ lucky_number: { $gt: 5 } })
+
+db.students.updateMany({}, { $set: { number_of_belts: 0 } })
+
+db.students.updateMany({ home_state: "Washington" }, { $inc: { number_of_belts: 1 } })
+
+db.students.updateMany({}, { $currentDate: { updated_on: true } })
+
