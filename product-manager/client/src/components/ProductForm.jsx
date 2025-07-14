@@ -1,53 +1,52 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
-const ProductForm = () => {
-    const [title, setTitle] = useState("");
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState("");
-    const [errors, setErrors] = useState({});  // <-- track backend validation errors
+const ProductForm = ({ initialValues, onSubmit, formTitle }) => {
+    const [formData, setFormData] = useState(initialValues);
+    const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        setFormData(initialValues);
+    }, [initialValues]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/api/products", { title, price, description })
-            .then(res => {
-                console.log("✅ Product created:", res.data);
-                setTitle("");
-                setPrice(0);
-                setDescription("");
-                setErrors({});
-            })
+        onSubmit(formData)
+            .then(() => setErrors({}))
             .catch(err => {
-                console.error("❌ Error creating product", err);
-                if (err.response && err.response.data && err.response.data.errors) {
-                    setErrors(err.response.data.errors);  // <-- set backend errors
+                if (err.response?.data?.errors) {
+                    setErrors(err.response.data.errors);
                 }
             });
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Add Product</h2>
+            <h2>{formTitle}</h2>
 
             <p>
                 <label>Title:</label><br />
-                <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
+                <input type="text" name="title" value={formData.title} onChange={handleChange} />
                 {errors.title && <span style={{ color: 'red' }}>{errors.title.message}</span>}
             </p>
 
             <p>
                 <label>Price:</label><br />
-                <input type="number" value={price} onChange={e => setPrice(e.target.value)} />
+                <input type="number" name="price" value={formData.price} onChange={handleChange} />
                 {errors.price && <span style={{ color: 'red' }}>{errors.price.message}</span>}
             </p>
 
             <p>
                 <label>Description:</label><br />
-                <textarea value={description} onChange={e => setDescription(e.target.value)} />
+                <textarea name="description" value={formData.description} onChange={handleChange} />
                 {errors.description && <span style={{ color: 'red' }}>{errors.description.message}</span>}
             </p>
 
-            <button type="submit">Create Product</button>
+            <button type="submit">{formTitle}</button>
         </form>
     );
 };

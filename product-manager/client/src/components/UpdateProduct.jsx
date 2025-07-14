@@ -1,56 +1,34 @@
-import React from "react";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import ProductForm from './ProductForm';
 
 const UpdateProduct = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({ title: "", price: 0, description: "" });
-    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/products/${id}`)
-            .then(res => {
-                setProduct(res.data);
-            })
-            .catch(err => console.error(err));
-    }, []);
+            .then(res => setProduct(res.data))
+            .catch(console.error);
+    }, [id]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProduct({ ...product, [name]: value });
-    }
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.patch(`http://localhost:8000/api/products/${id}`, product)
+    const handleUpdate = (updatedData) => {
+        return axios.patch(`http://localhost:8000/api/products/${id}`, updatedData)
             .then(res => {
-                console.log(" Product updated:", res.data);
-                setErrors({});
-            })
-            .catch(err => {
-                console.error(" Error updating product", err);
-                if (err.response && err.response.data && err.response.data.errors) {
-                    setErrors(err.response.data.errors);
-                }
+                console.log("✅ Product updated:", res.data);
+                navigate("/");
             });
-    }
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>Title</label>
-            <input type="text" name="title" value={product.title} onChange={handleChange} />
-            {errors.title && <span style={{ color: 'red' }}>{errors.title.message}</span>}
-            <br />
-            <label>Price</label>
-            <input type="number" name="price" value={product.price} onChange={handleChange} />
-            {errors.price && <span style={{ color: 'red' }}>{errors.price.message}</span>}
-            <br />
-            <label>Description</label>
-            <textarea name="description" value={product.description} onChange={handleChange}></textarea>
-            {errors.description && <span style={{ color: 'red' }}>{errors.description.message}</span>}
-            <br />
-            <input type="submit" />
-        </form>
+    };
 
-    )
-}
+    return (
+        <ProductForm
+            initialValues={product}
+            onSubmit={handleUpdate}
+            formTitle="Edit Product"
+        />
+    );
+};
+
 export default UpdateProduct;
